@@ -22,4 +22,30 @@ contacts = [
     }
 ];
 
-console.log(contacts);
+const data = localStorage.getItem("contacts") ? JSON.parse(localStorage.getItem("contacts")) : [];
+
+const maniputaleData = () => {
+    try {
+        const newId = data.length ? data.length + 1 : 1;
+        const name = prompt("Input name");
+        const email = prompt("Input email");
+        const phone = prompt("Input phone");
+        const address = prompt("Input address");
+
+        if (!newId || !name || !email || !phone || !address) {
+            throw new Error("Missing name, email, or phone");
+        }
+        else {
+            data.push({ newId, name, email, phone, address });
+            localStorage.setItem("contacts", JSON.stringify(data));
+            console.log("Data successfully added", data);
+        }
+    } catch (error) {
+        console.error(error);
+    } finally {
+        console.log("Data: ", data);
+    }
+}
+
+maniputaleData(); 
+
