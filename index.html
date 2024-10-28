@@ -22,11 +22,11 @@
         <button type="submit">Search</button>
       </div>
     </form>
-
-    <form action="#" id="insert-form">
+    <br>
+    <form action="#" id="insert-form" onSubmit="addContact()">
       <div>
         <label for="name">Name</label>
-        <input type="text" value="John Doe" id="name" name="name" placeholder="Name" />
+        <input type="text" id="name" name="name" placeholder="Name" />
       </div>
       <div>
         <label for="phone">Phone</label>
@@ -44,8 +44,12 @@
         <label for="notes">Notes</label>
         <input type="text" id="notes" name="notes" placeholder="Notes" />
       </div>
-      <button type="submit" onsubmit="addContact()">Submit</button>
+      <button type="submit">Submit</button>
     </form>
+    
+    <div id="show-form">
+      <!-- Contacts will be shown here -->
+    </div>
   </main>
 
   <script src="index.js"></script>
