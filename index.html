@@ -4,55 +4,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact Management | Address Book - Application</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Contact Management | Address Book</title>
 
 </head>
 
-<body>
-  <header>
-    <h1>Contact Management | Address Book - Appplication</h1>
+<body class="flex flex-col items-center justify-center">
+  <header class="flex flex-col items-center justify-center">
+    <h1 class="text-4xl font-bold"><a href="/">Contact Management | Address Book</a></h1>
   </header>
 
-  <main>
-    <form action="search-form">
-      <div>
-        <label for="search">Search</label>
-        <input type="text" id="search" name="search" placeholder="Search" />
+  <br class="w-full">
 
-        <button type="submit">Search</button>
+  <main class="flex flex-col items-center justify-center">
+    <form method="get" class="flex flex-col items-center justify-center">
+      <div id="searchContact">
+        <!-- <label for="search" class="text-xl font-bold">Search</label> -->
+        <input type="text" id="search" name="search" placeholder="Search contact here..." class="border-2 border-gray-400 rounded-lg p-2" />
+
+        <button id="searchButton" type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Search</button>
       </div>
     </form>
-    <br>
-    <form action="#" id="insert-form" onSubmit="addContact()">
+    <br class="w-full">
+    <form action="#" id="insert-form" class="flex flex-col items-center justify-center">
       <div>
-        <label for="name">Name</label>
-        <input type="text" id="name" name="name" placeholder="Name" />
+        <label for="name" class="text-xl font-bold flex">Name</label>
+        <input type="text" id="name" name="name" placeholder="Name" class="border-2 border-gray-200 rounded-lg p-1" />
       </div>
       <div>
-        <label for="phone">Phone</label>
-        <input type="tel" id="phone" name="phone" placeholder="Phone" />
+        <label for="phone" class="text-xl font-bold flex">Phone</label>
+        <input type="number" id="phone" name="phone" placeholder="Phone" class="border-2 border-gray-200 rounded-lg p-1" />
       </div>
       <div>
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="Email" />
+        <label for="email" class="text-xl font-bold flex">Email</label>
+        <input type="email" id="email" name="email" placeholder="Email"  class="border-2 border-gray-200 rounded-lg p-1" />
       </div>
       <div>
-        <label for="address">Address</label>
-        <input type="text" id="address" name="address" placeholder="Address" />
+        <label for="address" class="text-xl font-bold flex">Address</label>
+        <input type="text" id="address" name="address" placeholder="Address" class="border-2 border-gray-200 rounded-lg p-1" />
       </div>
       <div>
-        <label for="notes">Notes</label>
-        <input type="text" id="notes" name="notes" placeholder="Notes" />
+        <label for="notes" class="text-xl font-bold flex">Notes</label>
+        <input type="text" id="notes" name="notes" placeholder="Notes" class="border-2 border-gray-200 rounded-lg p-1" />
       </div>
-      <button type="submit">Submit</button>
+      <br class="w-full">
+      <div  class="flex flex-row justify-between">
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Contact</button>
+        <div class="w-2"></div>
+        <!-- <button type="button" id="showButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Show Contacts</button> -->
+      </div>
     </form>
     
-    <div id="show-form">
+    <div id="show-form" class="flex flex-col items-center justify-center">
       <!-- Contacts will be shown here -->
     </div>
   </main>
 
+  <script src="storage.js"></script>
   <script src="index.js"></script>
+  
 </body>
 
 </html>
