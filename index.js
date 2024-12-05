@@ -64,23 +64,72 @@ function showContacts() {
 
     const contactElements = contactsToShow.map(contact => {
         const { newId, name, phone, email, address, notes } = contact;
-        return `
-            <div>
-                <h2 class="text-xl font-bold">${name}</h2>
-                <ul class="list-disc ml-4">
-                <li class="text-sm">Phone: ${phone}</li>
-                <li class="text-sm">Email: ${email}</li>
-                <li class="text-sm">Address: ${address}</li>
-                <li class="text-sm">Notes: ${notes}</li>
-                </ul>
-            </div>
-            <div class="flex flex-row justify-between">
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="button" onclick="showEditContact(${newId})">Edit</button> <div class="w-2"></div>
-                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" type="button" onclick="deleteContact(${newId})">Delete</button>
-            </div>
-        `;
+        
+        // Create elements safely
+        const containerDiv = document.createElement('div');
+        
+        const contentDiv = document.createElement('div');
+        const heading = document.createElement('h2');
+        heading.className = 'text-xl font-bold';
+        heading.textContent = name;
+        
+        const ul = document.createElement('ul');
+        ul.className = 'list-disc ml-4';
+        
+        const items = [
+            {label: 'Phone', value: phone},
+            {label: 'Email', value: email}, 
+            {label: 'Address', value: address},
+            {label: 'Notes', value: notes}
+        ];
+        
+        items.forEach(item => {
+            const li = document.createElement('li');
+            li.className = 'text-sm';
+            li.textContent = `${item.label}: ${item.value}`;
+            ul.appendChild(li);
+        });
+        
+        contentDiv.appendChild(heading);
+        contentDiv.appendChild(ul);
+        
+        const buttonDiv = document.createElement('div');
+        buttonDiv.className = 'flex flex-row justify-between';
+        
+        const editButton = document.createElement('button');
+        editButton.className = 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded';
+        editButton.type = 'button';
+        editButton.onclick = () => showEditContact(newId);
+        editButton.textContent = 'Edit';
+        
+        const spacerDiv = document.createElement('div');
+        spacerDiv.className = 'w-2';
+        
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded';
+        deleteButton.type = 'button';
+        deleteButton.onclick = () => deleteContact(newId);
+        deleteButton.textContent = 'Delete';
+        
+        buttonDiv.appendChild(editButton);
+        buttonDiv.appendChild(spacerDiv);
+        buttonDiv.appendChild(deleteButton);
+        
+        containerDiv.appendChild(contentDiv);
+        containerDiv.appendChild(buttonDiv);
+        
+        return containerDiv;
     });
-    showContactsForm.innerHTML = contactElements.join("");
+    
+    // Clear existing content
+    while (showContactsForm.firstChild) {
+        showContactsForm.removeChild(showContactsForm.firstChild);
+    }
+    
+    // Append new elements
+    contactElements.forEach(element => {
+        showContactsForm.appendChild(element);
+    });
 }
 
 function deleteContact(id) {
@@ -99,40 +148,62 @@ function deleteContact(id) {
 function showEditContact(id) {
     addContactForm.style.display = 'none';
     const contacts = getContactById(id);
-    const contacts2 = getContacts();
-    console.log(id);
-    console.log(contacts2);
-    showContactsForm.innerHTML = `
-        <form action="#" id="edit-form" class="flex flex-col items-center justify-center">
-            <div>
-                <input type="hidden" id="newId" name="newId" placeholder="newId" value="${contacts.newId}" class="border-2 border-gray-200 rounded-lg p-1" />
-            </div>
-            <div>
-                <label for="name" class="text-xl font-bold flex">Name</label>
-                <input type="text" id="name" name="name" placeholder="Name" value="${contacts.name}" class="border-2 border-gray-200 rounded-lg p-1" />
-            </div>
-            <div>
-                <label for="phone" class="text-xl font-bold flex">Phone</label>
-                <input type="number" id="phone" name="phone" placeholder="Phone" value="${contacts.phone}" class="border-2 border-gray-200 rounded-lg p-1" />
-            </div>
-            <div>
-                <label for="email" class="text-xl font-bold flex">Email</label>
-                <input type="email" id="email" name="email" placeholder="Email" value="${contacts.email}" class="border-2 border-gray-200 rounded-lg p-1" />
-            </div>
-            <div>
-                <label for="address" class="text-xl font-bold flex">Address</label>
-                <input type="text" id="address" name="address" placeholder="Address" value="${contacts.address}" class="border-2 border-gray-200 rounded-lg p-1" />
-            </div>
-            <div>
-                <label for="notes" class="text-xl font-bold flex">Notes</label>
-                <input type="text" id="notes" name="notes" placeholder="Notes" value="${contacts.notes}" class="border-2 border-gray-200 rounded-lg p-1" />
-            </div>
-            <br class="w-full">
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit Contact</button>
-        </form>
-    `;
-    const editContactFormElement = document.getElementById("edit-form");
-    editContactFormElement.addEventListener("submit", editContact);
+    
+    // Create form element
+    const form = document.createElement('form');
+    form.id = 'edit-form';
+    form.action = '#';
+    form.className = 'flex flex-col items-center justify-center';
+
+    // Create and append form fields safely
+    const fields = [
+        { type: 'hidden', id: 'newId', name: 'newId', value: contacts.newId },
+        { type: 'text', id: 'name', name: 'name', label: 'Name', value: contacts.name },
+        { type: 'number', id: 'phone', name: 'phone', label: 'Phone', value: contacts.phone },
+        { type: 'email', id: 'email', name: 'email', label: 'Email', value: contacts.email },
+        { type: 'text', id: 'address', name: 'address', label: 'Address', value: contacts.address },
+        { type: 'text', id: 'notes', name: 'notes', label: 'Notes', value: contacts.notes }
+    ];
+
+    fields.forEach(field => {
+        const div = document.createElement('div');
+        
+        if (field.type !== 'hidden') {
+            const label = document.createElement('label');
+            label.htmlFor = field.id;
+            label.className = 'text-xl font-bold flex';
+            label.textContent = field.label;
+            div.appendChild(label);
+        }
+
+        const input = document.createElement('input');
+        input.type = field.type;
+        input.id = field.id;
+        input.name = field.name;
+        input.placeholder = field.label || '';
+        input.value = field.value;
+        input.className = 'border-2 border-gray-200 rounded-lg p-1';
+        
+        div.appendChild(input);
+        form.appendChild(div);
+    });
+
+    // Add submit button
+    const br = document.createElement('br');
+    br.className = 'w-full';
+    form.appendChild(br);
+
+    const button = document.createElement('button');
+    button.type = 'submit';
+    button.className = 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded';
+    button.textContent = 'Edit Contact';
+    form.appendChild(button);
+
+    // Clear and append the form
+    showContactsForm.innerHTML = '';
+    showContactsForm.appendChild(form);
+
+    form.addEventListener("submit", editContact);
 }
 
 function editContact(event) {
